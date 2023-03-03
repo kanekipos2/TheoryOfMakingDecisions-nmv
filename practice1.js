@@ -1,5 +1,3 @@
-const {table} = require('table');
-
 const testInput =
     '| № |           Название         | Цена(руб)(-) | Вес(кг)(+) | Время отклика(мс)(-) | Количество клавиш(+) |\n' +
     '|:-:|----------------------------|:------------:|:----------:|:--------------------:|:--------------------:|\n' +
@@ -15,18 +13,26 @@ const testInput =
 //  Всегда первые два столбца это нумерация и название!
 
 const resolved = tableResolver(testInput);
+const parettoOptimized = paretto(resolved);
 
-const out = [];
-for(let i1 = 0; i1 < resolved.length-1; i1++) {
-    let temp = [];
-    for(let i2 = 0; i2 < resolved.length-1; i2++) {
-        if(i2 >= i1) temp.push('x');
-        else temp.push(compare(i1, i2));
+console.table(parettoOptimized);
+console.log(extractNums(parettoOptimized));
+
+
+
+
+function paretto(resolved) {
+    const out = [];
+    for(let i1 = 0; i1 < resolved.length-1; i1++) {
+        let temp = [];
+        for(let i2 = 0; i2 < resolved.length-1; i2++) {
+            if(i2 >= i1) temp.push('x');
+            else temp.push(compare(i1, i2));
+        }
+        out.push(temp);
     }
-    out.push(temp);
+    return out;
 }
-
-console.log(table(out));
 
 function compare(i1, i2) {
     let c1 = resolved[i1+1];
@@ -49,7 +55,7 @@ function compare(i1, i2) {
         }
     }
     if((p + eq) == resolved[0].length-2) return 'А'+(i1+1);
-    if((p - eq) == -(resolved[0].length-2)) return 'A'+(i2+1);
+    if((p - eq) == -(resolved[0].length-2)) return 'А'+(i2+1);
     return 'н';
 }
 
@@ -69,4 +75,13 @@ function tableResolver(t) {
         }
     })
     return awns;
+}
+
+function extractNums(table) {
+    var out = [];
+    for(let i1 = 0; i1 < table.length; i1++) for(let i2 = 0; i2 < table[0].length; i2++) {
+        let a = table[i1][i2];
+        if(a != 'н' && a != 'x' && out.indexOf(a) === -1) out.push(a)
+    }
+    return out.sort();
 }

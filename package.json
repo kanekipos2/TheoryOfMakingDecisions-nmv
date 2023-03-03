@@ -15,8 +15,5 @@
   "bugs": {
     "url": "https://github.com/kanekipos2/-/issues"
   },
-  "homepage": "https://github.com/kanekipos2/-#readme",
-  "dependencies": {
-    "table": "^6.8.1"
-  }
+  "homepage": "https://github.com/kanekipos2/-#readme"
 }
